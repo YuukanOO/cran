@@ -13,5 +13,5 @@ func NewSection(title string) *Section {
 	}
 }
 
-func (s *Section) Append(node Node) { s.children = append(s.children, node) }
-func (s *Section) Children() []Node { return s.children }
+func (s *Section) Append(nodes ...Node) { s.children = append(s.children, nodes...) }
+func (s *Section) Children() []Node     { return s.children }

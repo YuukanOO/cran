@@ -14,5 +14,5 @@ func NewIntervention(speakerID, content string) *Intervention {
 	}
 }
 
-func (*Intervention) Append(node Node) {}
-func (*Intervention) Children() []Node { return []Node{} }
+func (*Intervention) Append(nodes ...Node) {}
+func (*Intervention) Children() []Node     { return []Node{} }

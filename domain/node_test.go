@@ -26,8 +26,7 @@ func TestNodeManipulations(t *testing.T) {
 	// Append intervention to the second section
 	section2.Append(intervention1)
 	// Append the second section and an intervention to the first one
-	section1.Append(section2)
-	section1.Append(intervention2)
+	section1.Append(section2, intervention2)
 	// And finally adds the section 1 to the report
 	report.Append(section1)
 

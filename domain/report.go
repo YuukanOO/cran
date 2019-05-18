@@ -29,8 +29,8 @@ func NewReport(title, url string) *Report {
 	}
 }
 
-func (r *Report) Append(node Node) { r.children = append(r.children, node) }
-func (r *Report) Children() []Node { return r.children }
+func (r *Report) Append(nodes ...Node) { r.children = append(r.children, nodes...) }
+func (r *Report) Children() []Node     { return r.children }
 
 // AddSpeaker adds a speaker to this report and returns the instantiated object.
 func (r *Report) AddSpeaker(id, name, profileURL, pictureURL, location, side string) *Speaker {
