@@ -3,13 +3,15 @@ package domain
 // Section holds data about a specific portion of the report.
 type Section struct {
 	Title    string
+	Level    int
 	children []Node
 }
 
 // NewSection instantiates a new section with the given data.
-func NewSection(title string) *Section {
+func NewSection(title string, level int) *Section {
 	return &Section{
 		Title: title,
+		Level: level,
 	}
 }
 
