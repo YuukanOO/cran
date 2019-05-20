@@ -44,15 +44,15 @@ func TestRegisterProvider(t *testing.T) {
 func TestGetProvider(t *testing.T) {
 	p, _ := GetProvider(p1.name)
 
-	assert.Equal(t, p1, p)
+	assert.Equal(t, p1, p, "It should get the first provider")
 
 	p, _ = GetProvider(p2.name)
 
-	assert.Equal(t, p2, p)
+	assert.Equal(t, p2, p, "It should get the second provider")
 }
 
 func TestGuessProvider(t *testing.T) {
 	p, _ := GuessProvider("http://www.assemblee-nationale.fr/15/cri/2018-2019/20190229.asp")
 
-	assert.Equal(t, p2, p)
+	assert.Equal(t, p2, p, "It should get the second provider by guessing it")
 }
