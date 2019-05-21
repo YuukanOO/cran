@@ -13,6 +13,14 @@ import (
 func newTestServer() *httptest.Server {
 	mux := http.NewServeMux()
 
+	mux.HandleFunc("/fiche/1", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+	})
+
+	mux.HandleFunc("/fiche/2", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/html")
+	})
+
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
 		w.Write([]byte(`<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -35,7 +43,7 @@ func newTestServer() *httptest.Server {
 			</h5>
 			<p>
 				<b>
-					<a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA605991">John Doe</a>
+					<a href="/fiche/1">John Doe</a>
 				</b>. La séance est ouverte.
 			</p>
 			<p> <i>(date ouverture séance)</i></p>
@@ -51,7 +59,7 @@ func newTestServer() *httptest.Server {
 			<div class="intervention">
 				<p>
 					<b>
-						<a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1874">John Doe</a>
+						<a href="/fiche/1">John Doe</a>						
 					</b>.  La parole est à Jean Dupont.
 				</p>
 			</div>
@@ -62,13 +70,13 @@ func newTestServer() *httptest.Server {
 				</h2>
 				<p>
 					<b>
-						<a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA1874">John Doe</a>
+						<a href="/fiche/1">John Doe</a>						
 					</b>.  La séance est suspendue.
 				</p>
 			</div>
 			<p>
 				<b>
-					<a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA718868">Jean Dupont</a>
+					<a href="/fiche/2">Jean Dupont</a>
 				</b>.  J'ai des choses à dire !
 			</p>
 		</div>
@@ -78,7 +86,7 @@ func newTestServer() *httptest.Server {
 			<h2 class="titre1">Titre 2<i></i></h2>
 			<p>
 				<b>
-					<a href="http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA718868">Jean Dupont</a>
+					<a href="/fiche/2>Jean Dupont</a>
 				</b>.  Et encore d'autres ici !
 			</p>
 		</div>
@@ -108,6 +116,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 
 			if assert.NotNil(section) {
 				assert.Equal("Civilité présidentposte président", section.Title)
+				assert.Equal("section-1", section.ID())
 
 				sectionChildren := section.Children()
 
@@ -117,12 +126,14 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 					if assert.NotNil(intervention) {
 						assert.Equal("John Doe", intervention.SpeakerID)
 						assert.Equal("La séance est ouverte.", intervention.Content)
+						assert.Equal("intervention-2", intervention.ID())
 					}
 
 					notice, _ := sectionChildren[1].(*domain.Notice)
 
 					if assert.NotNil(notice) {
 						assert.Equal("<i>(date ouverture séance)</i>", notice.Content)
+						assert.Equal("notice-3", notice.ID())
 					}
 				}
 			}
@@ -131,6 +142,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 
 			if assert.NotNil(section) {
 				assert.Equal("Titre 1", section.Title)
+				assert.Equal("section-4", section.ID())
 
 				sectionChildren := section.Children()
 
@@ -139,6 +151,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 
 					if assert.NotNil(section, "It should have a subsection") {
 						assert.Equal("Sous Titre 1", section.Title)
+						assert.Equal("section-5", section.ID())
 
 						sectionChildren := section.Children()
 
@@ -148,12 +161,14 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 							if assert.NotNil(intervention, "One intervention") {
 								assert.Equal("John Doe", intervention.SpeakerID)
 								assert.Equal("La parole est à Jean Dupont.", intervention.Content)
+								assert.Equal("intervention-6", intervention.ID())
 							}
 
 							section, _ := sectionChildren[1].(*domain.Section)
 
 							if assert.NotNil(section, "And one section") {
 								assert.Equal("Titre 99", section.Title)
+								assert.Equal("section-7", section.ID())
 
 								sectionChildren := section.Children()
 
@@ -163,6 +178,8 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 									if assert.NotNil(intervention, "First intervention") {
 										assert.Equal("John Doe", intervention.SpeakerID)
 										assert.Equal("La séance est suspendue.", intervention.Content)
+										assert.Equal("intervention-8", intervention.ID())
+
 									}
 
 									intervention, _ = sectionChildren[1].(*domain.Intervention)
@@ -170,6 +187,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 									if assert.NotNil(intervention, "Last intervention") {
 										assert.Equal("Jean Dupont", intervention.SpeakerID)
 										assert.Equal("J&#39;ai des choses à dire !", intervention.Content)
+										assert.Equal("intervention-9", intervention.ID())
 									}
 								}
 							}
@@ -182,6 +200,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 
 			if assert.NotNil(section) {
 				assert.Equal("Titre 2", section.Title)
+				assert.Equal("section-10", section.ID())
 			}
 		}
 	})
