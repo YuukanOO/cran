@@ -4,12 +4,14 @@ package domain
 type Section struct {
 	Title    string
 	Level    int
+	id       string
 	children []Node
 }
 
 // NewSection instantiates a new section with the given data.
-func NewSection(title string, level int) *Section {
+func NewSection(ID, title string, level int) *Section {
 	return &Section{
+		id:    ID,
 		Title: title,
 		Level: level,
 	}
@@ -18,3 +20,4 @@ func NewSection(title string, level int) *Section {
 func (s *Section) Append(nodes ...Node) { s.children = append(s.children, nodes...) }
 func (s *Section) Children() []Node     { return s.children }
 func (*Section) Type() string           { return "Section" }
+func (s *Section) ID() string           { return s.id }

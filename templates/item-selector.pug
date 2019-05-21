@@ -1,0 +1,10 @@
+if eq .Type "Section"
+  h2(id=.ID)= .Title
+  each _ in .Children
+    | {{ template "item-selector.pug" . }}
+else if eq .Type "Intervention"
+  .intervention(id=.ID)
+    p 
+      | {{ raw .Content }}
+else if eq .Type "Notice"
+  p(id=.ID)= .Content

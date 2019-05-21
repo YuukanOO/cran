@@ -20,11 +20,11 @@ const (
 func TestNodeManipulations(t *testing.T) {
 	assert := assert.New(t)
 	report := NewReport(reportName, reportURL, iconURL)
-	section1 := NewSection(section1Title, 1)
-	section2 := NewSection(section2Title, 1)
-	intervention1 := NewIntervention(interventionSpeaker, interventionContent)
-	intervention2 := NewIntervention(interventionSpeaker, interventionContent)
-	notice := NewNotice(noticeContent)
+	section1 := NewSection("s1", section1Title, 1)
+	section2 := NewSection("s2", section2Title, 1)
+	intervention1 := NewIntervention("i1", interventionSpeaker, interventionContent)
+	intervention2 := NewIntervention("i2", interventionSpeaker, interventionContent)
+	notice := NewNotice("n1", noticeContent)
 
 	// Append intervention to the second section
 	section2.Append(intervention1)

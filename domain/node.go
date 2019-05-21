@@ -5,5 +5,6 @@ package domain
 type Node interface {
 	Append(nodes ...Node)
 	Children() []Node
+	ID() string
 	Type() string
 }

@@ -34,6 +34,7 @@ func NewReport(title, URL, iconURL string) *Report {
 func (r *Report) Append(nodes ...Node) { r.children = append(r.children, nodes...) }
 func (r *Report) Children() []Node     { return r.children }
 func (*Report) Type() string           { return "Report" }
+func (*Report) ID() string             { return "root" }
 
 // AddSpeaker adds a speaker to this report and returns the instantiated object.
 func (r *Report) AddSpeaker(id, name, profileURL, pictureURL, location, side string) *Speaker {

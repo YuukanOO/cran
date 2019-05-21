@@ -2,6 +2,7 @@
 package assembleenationale
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -21,7 +22,7 @@ func (p *assembleeNationaleProvider) Accept(URL string) bool {
 	return strings.Contains(URL, "assemblee-nationale.fr")
 }
 
-func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selection) []domain.Node {
+func parseNode(report *domain.Report, index func() int, queue []domain.Node, ele *goquery.Selection) []domain.Node {
 	if ele.HasClass("ouverture_seance") ||
 		ele.HasClass("Point") ||
 		ele.HasClass("intervention") {
@@ -43,7 +44,7 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 				}
 			}
 
-			section := domain.NewSection(strings.TrimSpace(title.Text()), level)
+			section := domain.NewSection(fmt.Sprintf("s%d", index()), strings.TrimSpace(title.Text()), level)
 
 			// Find the first element in queue with a level inferior to ours
 			var i int
@@ -69,7 +70,7 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 		}
 
 		ele.Children().Each(func(_ int, c *goquery.Selection) {
-			queue = parseNode(report, queue, c)
+			queue = parseNode(report, index, queue, c)
 		})
 	} else if ele.Is("p") {
 		author := ele.Find("a[href]")
@@ -88,9 +89,9 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 		parent := queue[len(queue)-1]
 
 		if authorName != "" {
-			parent.Append(domain.NewIntervention(authorName, content))
+			parent.Append(domain.NewIntervention(fmt.Sprintf("i%d", index()), authorName, content))
 		} else {
-			parent.Append(domain.NewNotice(content))
+			parent.Append(domain.NewNotice(fmt.Sprintf("n%d", index()), content))
 		}
 	}
 
@@ -102,6 +103,12 @@ func (p *assembleeNationaleProvider) Fetch(URL string, callback domain.ProviderC
 
 	// Since the HTML is a mess, this queue holds sections
 	queue := []domain.Node{report}
+	
+	index := 0
+	generator := func () int {
+		index++
+		return index
+	}
 
 	c := colly.NewCollector()
 
@@ -110,7 +117,7 @@ func (p *assembleeNationaleProvider) Fetch(URL string, callback domain.ProviderC
 	})
 
 	c.OnHTML(".SYCERON > .ouverture_seance, .SYCERON > .Point", func(ele *colly.HTMLElement) {
-		queue = parseNode(report, queue, ele.DOM)
+		queue = parseNode(report, generator, queue, ele.DOM)
 	})
 
 	c.OnScraped(func(r *colly.Response) {

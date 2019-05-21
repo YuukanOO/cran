@@ -44,12 +44,21 @@ a:hover {
   flex: 1;
 }
 
+.report__feed {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 32px;
+}
+
 .report__nav {
+  align-self: flex-start;
   background-color: #fff;
   border-right: 1px solid #eee;
+  height: 100vh;
   padding: 16px;
   position: sticky;
   top: 0;
+  max-width: 350px;
 }
 
 /**
