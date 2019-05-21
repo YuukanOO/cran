@@ -11,13 +11,13 @@ import (
 	"github.com/gocolly/colly"
 )
 
-type assembleeNationale struct{}
+type assembleeNationaleProvider struct{}
 
-func (p *assembleeNationale) Name() string {
+func (p *assembleeNationaleProvider) Name() string {
 	return "Assemblée Nationale Française"
 }
 
-func (p *assembleeNationale) Accept(URL string) bool {
+func (p *assembleeNationaleProvider) Accept(URL string) bool {
 	return strings.Contains(URL, "assemblee-nationale.fr")
 }
 
@@ -71,11 +71,7 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 		ele.Children().Each(func(_ int, c *goquery.Selection) {
 			queue = parseNode(report, queue, c)
 		})
-	}
-
-	parent := queue[len(queue)-1]
-
-	if ele.Is("p") {
+	} else if ele.Is("p") {
 		author := ele.Find("a[href]")
 
 		// And remove the node so it doesn't appear in the final sentence
@@ -89,6 +85,8 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 			content = strings.TrimSpace(content[idx+1:])
 		}
 
+		parent := queue[len(queue)-1]
+
 		if authorName != "" {
 			parent.Append(domain.NewIntervention(authorName, content))
 		} else {
@@ -99,8 +97,8 @@ func parseNode(report *domain.Report, queue []domain.Node, ele *goquery.Selectio
 	return queue
 }
 
-func (p *assembleeNationale) Fetch(URL string, callback domain.ProviderCallback) {
-	report := domain.NewReport(URL, URL)
+func (p *assembleeNationaleProvider) Fetch(URL string, callback domain.ProviderCallback) {
+	report := domain.NewReport(URL, URL, "http://www.assemblee-nationale.fr/commun/ceresian/images/logo-an.png")
 
 	// Since the HTML is a mess, this queue holds sections
 	queue := []domain.Node{report}
@@ -123,5 +121,5 @@ func (p *assembleeNationale) Fetch(URL string, callback domain.ProviderCallback)
 }
 
 func init() {
-	domain.Register(&assembleeNationale{})
+	domain.Register(&assembleeNationaleProvider{})
 }

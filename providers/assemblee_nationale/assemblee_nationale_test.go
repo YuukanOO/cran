@@ -95,7 +95,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 	assert := assert.New(t)
 	ts := newTestServer()
 	defer ts.Close()
-	p := &assembleeNationale{}
+	p := &assembleeNationaleProvider{}
 
 	p.Fetch(ts.URL, func(report *domain.Report, err error) {
 		assert.NotNil(report, "Report should not be nil")

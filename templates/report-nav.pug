@@ -1,0 +1,7 @@
+each _ in .Children
+  if eq .Type "Section"
+    li
+      a(href="#").report-nav__item= .Title
+      if .Children
+        ul
+          | {{ template "report-nav.pug" . }}

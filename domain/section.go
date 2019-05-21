@@ -17,3 +17,4 @@ func NewSection(title string, level int) *Section {
 
 func (s *Section) Append(nodes ...Node) { s.children = append(s.children, nodes...) }
 func (s *Section) Children() []Node     { return s.children }
+func (*Section) Type() string           { return "Section" }

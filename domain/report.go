@@ -15,15 +15,17 @@ type Speaker struct {
 type Report struct {
 	Title    string
 	URL      string
+	IconURL  string
 	Speakers map[string]*Speaker
 	children []Node
 }
 
 // NewReport instantiates a new report.
-func NewReport(title, url string) *Report {
+func NewReport(title, URL, iconURL string) *Report {
 	return &Report{
 		Title:    title,
-		URL:      url,
+		URL:      URL,
+		IconURL:  iconURL,
 		Speakers: make(map[string]*Speaker),
 		children: make([]Node, 0),
 	}
@@ -31,6 +33,7 @@ func NewReport(title, url string) *Report {
 
 func (r *Report) Append(nodes ...Node) { r.children = append(r.children, nodes...) }
 func (r *Report) Children() []Node     { return r.children }
+func (*Report) Type() string           { return "Report" }
 
 // AddSpeaker adds a speaker to this report and returns the instantiated object.
 func (r *Report) AddSpeaker(id, name, profileURL, pictureURL, location, side string) *Speaker {

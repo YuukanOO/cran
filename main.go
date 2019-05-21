@@ -1,9 +1,11 @@
 package main
 
 import (
-	"cran/cran"
 	"html/template"
 	"os"
+
+	cran "cran/domain"
+	_ "cran/providers/assemblee_nationale"
 
 	"github.com/kataras/iris"
 )

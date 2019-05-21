@@ -9,6 +9,7 @@ import (
 const (
 	reportName          = "Report Name"
 	reportURL           = "https://some.domain/report"
+	iconURL             = "https://some.domain/icon.png"
 	section1Title       = "Section 1"
 	section2Title       = "Section 2"
 	interventionSpeaker = "John Doe"
@@ -18,7 +19,7 @@ const (
 
 func TestNodeManipulations(t *testing.T) {
 	assert := assert.New(t)
-	report := NewReport(reportName, reportURL)
+	report := NewReport(reportName, reportURL, iconURL)
 	section1 := NewSection(section1Title, 1)
 	section2 := NewSection(section2Title, 1)
 	intervention1 := NewIntervention(interventionSpeaker, interventionContent)

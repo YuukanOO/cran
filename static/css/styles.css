@@ -18,55 +18,13 @@ body {
   line-height: 1.5;
 }
 
-a,
-a:visited {
-  color: #4d4d9e;
-  text-decoration: none;
+ul {
+  list-style-position: inside;
 }
+
 
 a:hover {
   text-decoration: underline;
-}
-
-/**
- * -----------------------------------------------------------------------------
- * Home
- * -----------------------------------------------------------------------------
- */
-
-.home {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-}
-
-.home__content {
-  background-color: #fff;
-  box-shadow: 0 1px 3px #ccc;
-  max-width: 600px;
-  padding: 32px;
-}
-
-.home__form {
-  display: flex;
-  margin-top: 32px;
-}
-
-.home__input {
-  border: 1px solid #ccc;
-  border-right: none;
-  flex: 1;
-  padding: 8px;
-}
-
-.home__button {
-  background-color: #4d4d9e;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 8px;
 }
 
 /**
@@ -75,67 +33,95 @@ a:hover {
  * -----------------------------------------------------------------------------
  */
 
-.report__header {
-  padding-top: 48px;
-  padding-bottom: 48px;
-  text-align: center;
+.report {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-.report__title {
-  font-size: 32px;
-  font-weight: bold;
-  letter-spacing: -1px;
+.report__content {
+  display: flex;
+  flex: 1;
 }
 
-.report__content,
-.report__header {
-  margin: 0 auto;
-  max-width: 800px;
-  width: 100%;
-}
-
-.report__header {
-  padding-left: 16px;
-  padding-right: 16px;
+.report__nav {
+  background-color: #fff;
+  border-right: 1px solid #eee;
+  padding: 16px;
+  position: sticky;
+  top: 0;
 }
 
 /**
  * -----------------------------------------------------------------------------
- * Section
+ * Report header
  * -----------------------------------------------------------------------------
  */
 
-.section {
-  
+.report-header {
+  align-items: center;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  padding: 16px;
 }
 
-.section__header {
-  text-align: center;
-  position: relative;
+.report-header__icon {
+  margin-right: 16px;
+  max-width: 64px;
 }
 
-.section__header::after {
-  content: '';
-  position: absolute;
-  height: 1px;
-  left: 0;
-  right: 0;
-  background-color: #eee;
-  top: 50%;
-  z-index: -1;
-}
-
-.section__title {
-  background-color: #fafafa;
-  display: inline-block;
-  font-size: 18px;
+.report-header__title {
   font-weight: 600;
-  padding: 0 16px;
-  position: relative;
 }
 
-.section__header + .section__interventions {
-  margin-top: 32px;
+.report-header__source {
+  color: #999;
+  font-size: 14px;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Report nav
+ * -----------------------------------------------------------------------------
+ */
+
+.report-nav,
+.report-nav ul {
+  list-style-type: none;
+}
+
+.report-nav__item {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.report-nav__item:target {
+  font-weight: 600;
+}
+
+.report-nav li ul {
+  margin-left: 16px;
+}
+
+.report-nav ul .report-nav__item {
+  color: #222;
+}
+
+.report-nav ul ul .report-nav__item {
+  color: #222;
+  font-style: italic;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Animations
+ * -----------------------------------------------------------------------------
+ */
+
+@keyframes highlight {
+  0% { border-color: #4d4d9e; }
+  100% { border-color: transparent; }
 }
 
 /**
@@ -152,72 +138,18 @@ a:hover {
   padding: 0 32px 32px 32px;
 }
 
-@keyframes highlight {
-  0% { border-color: #4d4d9e; }
-  100% { border-color: transparent; }
-}
-
 .intervention:target {
   animation: highlight .8s ease-out;
 }
 
-.intervention__sentence {
-  padding-top: 16px;
-}
-
-.intervention__speaker {
-  align-items: center;
-  background-color: white;
-  display: flex;
-  position: sticky;
-  top: 0;
-  padding: 16px 0;
-}
-
 /**
  * -----------------------------------------------------------------------------
- * Speaker
+ * Apply brand color to elements
  * -----------------------------------------------------------------------------
  */
 
-.speaker {
-  
-}
-
-.speaker__picture {
-  background-size: cover;
-  border-radius: 50%;
-  margin-right: 16px;
-  height: 64px;
-  width: 64px;
-}
-
-
-.speaker__data {
-  flex: 1;
-}
-
-.speaker__name {
-  font-weight: 600;
-}
-
-.speaker__meta,
-.intervention__permalink {
-  color: #777 !important;
-  font-size: 14px;
-}
-
-/**
- * -----------------------------------------------------------------------------
- * Misc.
- * -----------------------------------------------------------------------------
- */
-
-.notice {
-  margin: 0 auto 48px auto;
-  max-width: 800px;
-  font-size: 14px;
-  font-style: normal;
-  color: #777;
-  text-align: center;
+.report-header__title,
+.report-nav__item,
+a {
+  color: #3d7cda;
 }

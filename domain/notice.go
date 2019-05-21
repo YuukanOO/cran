@@ -14,3 +14,4 @@ func NewNotice(content string) *Notice {
 
 func (*Notice) Append(nodes ...Node) {}
 func (*Notice) Children() []Node     { return []Node{} }
+func (*Notice) Type() string         { return "Notice" }

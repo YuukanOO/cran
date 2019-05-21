@@ -16,3 +16,4 @@ func NewIntervention(speakerID, content string) *Intervention {
 
 func (*Intervention) Append(nodes ...Node) {}
 func (*Intervention) Children() []Node     { return []Node{} }
+func (*Intervention) Type() string         { return "Intervention" }
