@@ -1,4 +1,4 @@
-package providers
+package assembleenationale
 
 import (
 	"net/http"
@@ -95,7 +95,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 	assert := assert.New(t)
 	ts := newTestServer()
 	defer ts.Close()
-	p := &assemblee_nationale{}
+	p := &assembleeNationale{}
 
 	p.Fetch(ts.URL, func(report *domain.Report, err error) {
 		assert.NotNil(report, "Report should not be nil")
@@ -122,7 +122,7 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 					notice, _ := sectionChildren[1].(*domain.Notice)
 
 					if assert.NotNil(notice) {
-						assert.Equal("(date ouverture séance)", notice.Content)
+						assert.Equal("<i>(date ouverture séance)</i>", notice.Content)
 					}
 				}
 			}
@@ -131,6 +131,51 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 
 			if assert.NotNil(section) {
 				assert.Equal("Titre 1", section.Title)
+
+				sectionChildren := section.Children()
+
+				if assert.Len(sectionChildren, 1, "First section should have 1 child") {
+					section, _ = sectionChildren[0].(*domain.Section)
+
+					if assert.NotNil(section, "It should have a subsection") {
+						assert.Equal("Sous Titre 1", section.Title)
+
+						sectionChildren := section.Children()
+
+						if assert.Len(sectionChildren, 2, "Sub section should have 2 children") {
+							intervention, _ := sectionChildren[0].(*domain.Intervention)
+
+							if assert.NotNil(intervention, "One intervention") {
+								assert.Equal("John Doe", intervention.SpeakerID)
+								assert.Equal("La parole est à Jean Dupont.", intervention.Content)
+							}
+
+							section, _ := sectionChildren[1].(*domain.Section)
+
+							if assert.NotNil(section, "And one section") {
+								assert.Equal("Titre 99", section.Title)
+
+								sectionChildren := section.Children()
+
+								if assert.Len(sectionChildren, 2, "Last section should have 2 interventions") {
+									intervention, _ := sectionChildren[0].(*domain.Intervention)
+
+									if assert.NotNil(intervention, "First intervention") {
+										assert.Equal("John Doe", intervention.SpeakerID)
+										assert.Equal("La séance est suspendue.", intervention.Content)
+									}
+
+									intervention, _ = sectionChildren[1].(*domain.Intervention)
+
+									if assert.NotNil(intervention, "Last intervention") {
+										assert.Equal("Jean Dupont", intervention.SpeakerID)
+										assert.Equal("J&#39;ai des choses à dire !", intervention.Content)
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 
 			section, _ = children[2].(*domain.Section)
