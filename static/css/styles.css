@@ -55,7 +55,6 @@ a:hover {
   background-color: #fff;
   border-right: 1px solid #eee;
   height: 100vh;
-  padding: 16px;
   position: sticky;
   overflow: auto;
   top: 0;
@@ -95,6 +94,10 @@ a:hover {
  * Report nav
  * -----------------------------------------------------------------------------
  */
+
+.report-nav {
+  margin: 16px;
+}
 
 .report-nav,
 .report-nav ul {

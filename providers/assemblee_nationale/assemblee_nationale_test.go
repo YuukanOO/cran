@@ -12,13 +12,87 @@ import (
 
 func newTestServer() *httptest.Server {
 	mux := http.NewServeMux()
+	server := httptest.NewServer(mux)
 
 	mux.HandleFunc("/fiche/1", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte(`<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+</head>
+<body>
+		<div id="page-fond">
+			<div id="page">
+				<div>
+					<div id="deputes-fiche">
+						<section>
+							<div id="haut-contenu-page">
+								<article>
+									<div class="titre-bandeau-bleu clearfix">
+										<h1>M. John Doe</h1>
+										<p class="deputy-healine-sub-title">Doubs&nbsp;(5<sup>e</sup> circonscription)</p>
+										<p class="deputy-healine-sub-title orange">Mandat en cours</p>
+									</div>
+									<div class="contenu-principal en-direct-commission clearfix">
+										<div class="interieur-contenu-principal">
+											<div id="deputes-illustration">
+												<div class="deputes-image">
+													<img src="/photos/1.jpg">
+												</div>
+												<span><a title="Accédez à la composition du groupe" href="/compo">Les Républicains</a></span>
+											</div>
+										</div>
+									</div>
+								</article>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+</html>`))
 	})
 
 	mux.HandleFunc("/fiche/2", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
+		w.Write([]byte(`<!DOCTYPE html>
+		<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+		<head>
+		</head>
+		<body>
+				<div id="page-fond">
+					<div id="page">
+						<div>
+							<div id="deputes-fiche">
+								<section>
+									<div id="haut-contenu-page">
+										<article>
+											<div class="titre-bandeau-bleu clearfix">
+												<h1>M. Jean Dupont</h1>
+												<p class="deputy-healine-sub-title">Bouches-du-Rhône&nbsp;(4<sup>e</sup> circonscription)</p>
+												<p class="deputy-healine-sub-title orange">Mandat en cours</p>
+											</div>
+											<div class="contenu-principal en-direct-commission clearfix">
+												<div class="interieur-contenu-principal">
+													<div id="deputes-illustration">
+														<div class="deputes-image">
+															<img src="/photos/2.jpg">
+														</div>
+														<span class="pres-groupe">Président du groupe</span>															
+														<span><a title="Accédez à la composition du groupe" href="/compo">Les Républicains</a></span>
+													</div>
+												</div>
+											</div>
+										</article>
+									</div>
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+		</body>
+		</html>`))
 	})
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +117,7 @@ func newTestServer() *httptest.Server {
 			</h5>
 			<p>
 				<b>
-					<a href="/fiche/1">John Doe</a>
+					<a href="` + server.URL + `/fiche/1">John Doe</a>
 				</b>. La séance est ouverte.
 			</p>
 			<p> <i>(date ouverture séance)</i></p>
@@ -59,7 +133,7 @@ func newTestServer() *httptest.Server {
 			<div class="intervention">
 				<p>
 					<b>
-						<a href="/fiche/1">John Doe</a>						
+						<a href="` + server.URL + `/fiche/1">John Doe</a>						
 					</b>.  La parole est à Jean Dupont.
 				</p>
 			</div>
@@ -70,13 +144,13 @@ func newTestServer() *httptest.Server {
 				</h2>
 				<p>
 					<b>
-						<a href="/fiche/1">John Doe</a>						
+						<a href="` + server.URL + `/fiche/1">John Doe</a>						
 					</b>.  La séance est suspendue.
 				</p>
 			</div>
 			<p>
 				<b>
-					<a href="/fiche/2">Jean Dupont</a>
+					<a href="` + server.URL + `/fiche/2">Jean Dupont</a>
 				</b>.  J'ai des choses à dire !
 			</p>
 		</div>
@@ -86,7 +160,7 @@ func newTestServer() *httptest.Server {
 			<h2 class="titre1">Titre 2<i></i></h2>
 			<p>
 				<b>
-					<a href="/fiche/2>Jean Dupont</a>
+					<a href="` + server.URL + `/fiche/2>Jean Dupont</a>
 				</b>.  Et encore d'autres ici !
 			</p>
 		</div>
@@ -96,10 +170,10 @@ func newTestServer() *httptest.Server {
 </html>`))
 	})
 
-	return httptest.NewServer(mux)
+	return server
 }
 
-func TestAssembleeNationaleProvider(t *testing.T) {
+func TestAssembleeNationaleProviderContentParsing(t *testing.T) {
 	assert := assert.New(t)
 	ts := newTestServer()
 	defer ts.Close()
@@ -201,6 +275,39 @@ func TestAssembleeNationaleProvider(t *testing.T) {
 			if assert.NotNil(section) {
 				assert.Equal("Titre 2", section.Title)
 				assert.Equal("section-10", section.ID())
+			}
+		}
+	})
+}
+
+func TestAssembleeNationaleProviderSpeakersParsing(t *testing.T) {
+	assert := assert.New(t)
+	ts := newTestServer()
+	defer ts.Close()
+	p := &assembleeNationaleProvider{}
+
+	p.Fetch(ts.URL, func(report *domain.Report, err error) {
+		if assert.Len(report.Speakers, 2, "It should contains 2 speakers") {
+			speaker := report.Speaker("John Doe")
+
+			if assert.NotNil(speaker, "It should contains John Doe profile") {
+				assert.Equal("John Doe", speaker.ID)
+				assert.Equal("M. John Doe", speaker.Name)
+				assert.Equal(ts.URL+"/fiche/1", speaker.ProfileURL)
+				assert.Equal(ts.URL+"/photos/1.jpg", speaker.PictureURL)
+				assert.Equal("Doubs\u00a0(5e circonscription)", speaker.Location)
+				assert.Equal("Les Républicains", speaker.Side)
+			}
+
+			speaker = report.Speaker("Jean Dupont")
+
+			if assert.NotNil(speaker, "It should contains Jean Dupont profile") {
+				assert.Equal("Jean Dupont", speaker.ID)
+				assert.Equal("M. Jean Dupont", speaker.Name)
+				assert.Equal(ts.URL+"/fiche/2", speaker.ProfileURL)
+				assert.Equal(ts.URL+"/photos/2.jpg", speaker.PictureURL)
+				assert.Equal("Bouches-du-Rhône\u00a0(4e circonscription)", speaker.Location)
+				assert.Equal("Les Républicains", speaker.Side)
 			}
 		}
 	})

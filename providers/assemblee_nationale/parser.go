@@ -101,6 +101,24 @@ func (p *parser) parseNode(ele *goquery.Selection) {
 
 		if authorName != "" {
 			parent.Append(domain.NewIntervention(p.nextIndex("intervention-"), authorName, content))
+
+			d := p.collector.Clone()
+
+			d.OnHTML("html", func(profileEle *colly.HTMLElement) {
+				title := profileEle.DOM.Find("h1")
+				img := profileEle.DOM.Find(".deputes-image img")
+
+				p.report.AddSpeaker(authorName,
+					title.Text(),
+					profileEle.Request.URL.String(),
+					profileEle.Request.AbsoluteURL(img.AttrOr("src", "")),
+					strings.TrimSpace(title.Next().Text()),
+					strings.TrimSpace(img.Parent().Parent().Children().Last().Text()))
+			})
+
+			if authorLink, exists := author.Attr("href"); exists {
+				d.Visit(authorLink)
+			}
 		} else {
 			parent.Append(domain.NewNotice(p.nextIndex("notice-"), content))
 		}

@@ -51,3 +51,8 @@ func (r *Report) AddSpeaker(id, name, profileURL, pictureURL, location, side str
 
 	return speaker
 }
+
+// Speaker retrieves a speaker by its ID.
+func (r *Report) Speaker(name string) *Speaker {
+	return r.Speakers[name]
+}
