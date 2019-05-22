@@ -22,12 +22,12 @@ func newParser(url string) *parser {
 
 	return &parser{
 		report:    r,
-		collector: colly.NewCollector(),
+		collector: colly.NewCollector(colly.Async(true)),
 		queue:     []domain.Node{r},
 	}
 }
 
-func (p *parser) nextIndex(prefix string) string {
+func (p *parser) nextID(prefix string) string {
 	p.index++
 
 	return fmt.Sprintf("%s%d", prefix, p.index)
@@ -55,7 +55,7 @@ func (p *parser) parseNode(ele *goquery.Selection) {
 				}
 			}
 
-			section := domain.NewSection(p.nextIndex("section-"), strings.TrimSpace(title.Text()), level)
+			section := domain.NewSection(p.nextID("section-"), strings.TrimSpace(title.Text()), level)
 
 			// Find the first element in queue with a level inferior to ours
 			var i int
@@ -100,27 +100,30 @@ func (p *parser) parseNode(ele *goquery.Selection) {
 		parent := p.queue[len(p.queue)-1]
 
 		if authorName != "" {
-			parent.Append(domain.NewIntervention(p.nextIndex("intervention-"), authorName, content))
+			parent.Append(domain.NewIntervention(p.nextID("intervention-"), authorName, content))
 
-			d := p.collector.Clone()
+			authorLink, authorLinkExists := author.Attr("href")
 
-			d.OnHTML("html", func(profileEle *colly.HTMLElement) {
-				title := profileEle.DOM.Find("h1")
-				img := profileEle.DOM.Find(".deputes-image img")
+			if _, speakerExists := p.report.Speakers[authorName]; !speakerExists && authorLinkExists {
+				d := p.collector.Clone()
 
-				p.report.AddSpeaker(authorName,
-					title.Text(),
-					profileEle.Request.URL.String(),
-					profileEle.Request.AbsoluteURL(img.AttrOr("src", "")),
-					strings.TrimSpace(title.Next().Text()),
-					strings.TrimSpace(img.Parent().Parent().Children().Last().Text()))
-			})
+				d.OnHTML("html", func(profileEle *colly.HTMLElement) {
+					title := profileEle.DOM.Find("h1")
+					img := profileEle.DOM.Find(".deputes-image img")
 
-			if authorLink, exists := author.Attr("href"); exists {
+					p.report.AddSpeaker(authorName,
+						title.Text(),
+						profileEle.Request.URL.String(),
+						profileEle.Request.AbsoluteURL(img.AttrOr("src", "")),
+						strings.TrimSpace(title.Next().Text()),
+						strings.TrimSpace(img.Parent().Parent().Children().Last().Text()))
+				})
+
 				d.Visit(authorLink)
+				d.Wait()
 			}
 		} else {
-			parent.Append(domain.NewNotice(p.nextIndex("notice-"), content))
+			parent.Append(domain.NewNotice(p.nextID("notice-"), content))
 		}
 	}
 }
@@ -139,4 +142,5 @@ func (p *parser) run(cb domain.ProviderCallback) {
 	})
 
 	p.collector.Visit(p.report.URL)
+	p.collector.Wait()
 }
