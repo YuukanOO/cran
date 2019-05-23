@@ -1,10 +1,25 @@
-if eq .Type "Section"
-  h2(id=.ID)= .Title
-  each _ in .Children
-    | {{ template "item-selector.pug" . }}
-else if eq .Type "Intervention"
-  .intervention(id=.ID)
-    p 
-      | {{ raw .Content }}
-else if eq .Type "Notice"
-  p(id=.ID)= .Content
+if eq .Node.Type "Section"
+  h2(id=.Node.ID)= .Node.Title
+  each _ in .Node.Children
+    | {{ template "item-selector.pug" (wrap . $.Report) }}
+else if eq .Node.Type "Intervention"
+  .intervention(id=.Node.ID)
+    | {{ $s := (index .Report.Speakers .Node.SpeakerID) }}
+    if $s
+      .intervention__speaker.speaker
+        if $s.PictureURL
+          .speaker__picture(style="background-image: url('{{ $s.PictureURL }}')")
+        .speaker__data
+          a.speaker__name(href=$s.ProfileURL)= $s.Name
+          p.speaker__meta= $s.Meta
+        a.intervention__permalink(href=print "#" .Node.ID) #
+    else
+      .intervention__speaker.speaker
+        p= .Node.SpeakerID
+    .intervention__content
+      p 
+        | {{ raw .Node.Content }}
+else if eq .Node.Type "Notice"
+  .notice(id=.Node.ID)
+    p
+      | {{ raw .Node.Content }}

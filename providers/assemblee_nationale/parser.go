@@ -14,6 +14,7 @@ type parser struct {
 	index     int
 	collector *colly.Collector
 	report    *domain.Report
+	speakers  map[string]*domain.Speaker
 	queue     []domain.Node
 }
 
@@ -23,6 +24,7 @@ func newParser(url string) *parser {
 	return &parser{
 		report:    r,
 		collector: colly.NewCollector(colly.Async(true)),
+		speakers:  make(map[string]*domain.Speaker),
 		queue:     []domain.Node{r},
 	}
 }
@@ -102,25 +104,14 @@ func (p *parser) parseNode(ele *goquery.Selection) {
 		if authorName != "" {
 			parent.Append(domain.NewIntervention(p.nextID("intervention-"), authorName, content))
 
-			authorLink, authorLinkExists := author.Attr("href")
+			if authorLink, authorLinkExists := author.Attr("href"); authorLinkExists {
+				if _, speakerExists := p.speakers[authorLink]; !speakerExists {
+					p.speakers[authorLink] = &domain.Speaker{
+						ID: authorName,
+					}
 
-			if _, speakerExists := p.report.Speakers[authorName]; !speakerExists && authorLinkExists {
-				d := p.collector.Clone()
-
-				d.OnHTML("html", func(profileEle *colly.HTMLElement) {
-					title := profileEle.DOM.Find("h1")
-					img := profileEle.DOM.Find(".deputes-image img")
-
-					p.report.AddSpeaker(authorName,
-						title.Text(),
-						profileEle.Request.URL.String(),
-						profileEle.Request.AbsoluteURL(img.AttrOr("src", "")),
-						strings.TrimSpace(title.Next().Text()),
-						strings.TrimSpace(img.Parent().Parent().Children().Last().Text()))
-				})
-
-				d.Visit(authorLink)
-				d.Wait()
+					p.collector.Visit(authorLink)
+				}
 			}
 		} else {
 			parent.Append(domain.NewNotice(p.nextID("notice-"), content))
@@ -129,18 +120,33 @@ func (p *parser) parseNode(ele *goquery.Selection) {
 }
 
 func (p *parser) run(cb domain.ProviderCallback) {
-	p.collector.OnHTML("h1", func(e *colly.HTMLElement) {
+	p.collector.OnHTML(".SYCERON h1", func(e *colly.HTMLElement) {
 		p.report.Title = e.Text
+	})
+
+	p.collector.OnHTML("#deputes-fiche", func(e *colly.HTMLElement) {
+		speaker := p.speakers[e.Request.URL.String()]
+
+		title := e.DOM.Find("h1")
+		img := e.DOM.Find(".deputes-image img")
+
+		speaker.Name = title.Text()
+		speaker.ProfileURL = e.Request.URL.String()
+		speaker.PictureURL = e.Request.AbsoluteURL(img.AttrOr("src", ""))
+		speaker.Location = strings.TrimSpace(title.Next().Text())
+		speaker.Side = strings.TrimSpace(img.Parent().Parent().Children().Last().Text())
 	})
 
 	p.collector.OnHTML(".SYCERON > .ouverture_seance, .SYCERON > .Point", func(ele *colly.HTMLElement) {
 		p.parseNode(ele.DOM)
 	})
 
-	p.collector.OnScraped(func(r *colly.Response) {
-		cb(p.report, nil)
-	})
-
 	p.collector.Visit(p.report.URL)
 	p.collector.Wait()
+
+	for _, speaker := range p.speakers {
+		p.report.AddSpeaker(speaker)
+	}
+
+	cb(p.report, nil)
 }

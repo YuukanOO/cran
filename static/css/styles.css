@@ -22,6 +22,9 @@ ul {
   list-style-position: inside;
 }
 
+a {
+  text-decoration: none;
+}
 
 a:hover {
   text-decoration: underline;
@@ -87,6 +90,7 @@ a:hover {
 .report-header__source {
   color: #999;
   font-size: 14px;
+  text-decoration: underline;
 }
 
 /**
@@ -153,6 +157,64 @@ a:hover {
 
 .intervention:target {
   animation: highlight .8s ease-out;
+}
+
+.intervention__content {
+  padding-top: 16px;
+}
+
+.intervention__speaker {
+  align-items: center;
+  background-color: white;
+  display: flex;
+  position: sticky;
+  top: 0;
+  padding: 16px 0;
+}
+
+.intervention__permalink {
+  color: #999;
+  font-size: 14px;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Speaker
+ * -----------------------------------------------------------------------------
+ */
+
+.speaker__picture {
+  background-size: cover;
+  border-radius: 50%;
+  margin-right: 16px;
+  height: 64px;
+  width: 64px;
+}
+
+.speaker__data {
+  flex: 1;
+}
+
+.speaker__name {
+  font-weight: 600;
+}
+
+.speaker__meta {
+  color: #999;
+  font-size: 14px;
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Notice
+ * -----------------------------------------------------------------------------
+ */
+
+.notice {
+  color: #999;
+  font-size: 14px;
+  margin-bottom: 32px;
+  text-align: center;
 }
 
 /**

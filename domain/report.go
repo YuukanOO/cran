@@ -1,5 +1,7 @@
 package domain
 
+import "fmt"
+
 // Speaker hold profile information about a people.
 type Speaker struct {
 	ID         string
@@ -8,6 +10,11 @@ type Speaker struct {
 	PictureURL string
 	Location   string
 	Side       string
+}
+
+// Meta retrieves some meta information about the speaker.
+func (s *Speaker) Meta() string {
+	return fmt.Sprintf("%s · %s", s.Side, s.Location)
 }
 
 // Report represents the root node of the tree and hold informations
@@ -36,20 +43,9 @@ func (r *Report) Children() []Node     { return r.children }
 func (*Report) Type() string           { return "Report" }
 func (*Report) ID() string             { return "root" }
 
-// AddSpeaker adds a speaker to this report and returns the instantiated object.
-func (r *Report) AddSpeaker(id, name, profileURL, pictureURL, location, side string) *Speaker {
-	speaker := &Speaker{
-		ID:         id,
-		Name:       name,
-		ProfileURL: profileURL,
-		PictureURL: pictureURL,
-		Location:   location,
-		Side:       side,
-	}
-
-	r.Speakers[id] = speaker
-
-	return speaker
+// AddSpeaker adds a speaker to this report.
+func (r *Report) AddSpeaker(speaker *Speaker) {
+	r.Speakers[speaker.ID] = speaker
 }
 
 // Speaker retrieves a speaker by its ID.

@@ -20,7 +20,7 @@ html(lang="fr")
       
       .report__feed
         each _ in .Children
-          | {{ template "item-selector.pug" . }}
+          | {{ template "item-selector.pug" (wrap . $) }}
     //- .report__header
     //-   h1.report__title= .Title
     //-   a.report__source(href=.Source)= .Source

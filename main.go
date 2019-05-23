@@ -10,6 +10,11 @@ import (
 	"github.com/kataras/iris"
 )
 
+type wrapedContext struct {
+	Node   cran.Node
+	Report *cran.Report
+}
+
 func main() {
 	app := iris.Default()
 	app.StaticServe("static", "/static")
@@ -20,6 +25,13 @@ func main() {
 	// Tiny func to return a raw HTML
 	pug.AddFunc("raw", func(source string) template.HTML {
 		return template.HTML(source)
+	})
+
+	pug.AddFunc("wrap", func(node cran.Node, report *cran.Report) *wrapedContext {
+		return &wrapedContext{
+			Node:   node,
+			Report: report,
+		}
 	})
 
 	// Get the index form
