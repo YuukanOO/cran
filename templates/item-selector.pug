@@ -1,7 +1,7 @@
 if eq .Node.Type "Section"
-  h2(id=.Node.ID)= .Node.Title
+  h2.section__title(id=.Node.ID, class=print "section__title--" .Level)= .Node.Title
   each _ in .Node.Children
-    | {{ template "item-selector.pug" (wrap . $.Report) }}
+    | {{ template "item-selector.pug" (wrap . $.Report $.Level) }}
 else if eq .Node.Type "Intervention"
   .intervention(id=.Node.ID)
     | {{ $s := (index .Report.Speakers .Node.SpeakerID) }}

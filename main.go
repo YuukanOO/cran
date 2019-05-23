@@ -13,6 +13,7 @@ import (
 type wrapedContext struct {
 	Node   cran.Node
 	Report *cran.Report
+	Level int
 }
 
 func main() {
@@ -27,10 +28,11 @@ func main() {
 		return template.HTML(source)
 	})
 
-	pug.AddFunc("wrap", func(node cran.Node, report *cran.Report) *wrapedContext {
+	pug.AddFunc("wrap", func(node cran.Node, report *cran.Report, level int) *wrapedContext {
 		return &wrapedContext{
 			Node:   node,
 			Report: report,
+			Level: level + 1,
 		}
 	})
 

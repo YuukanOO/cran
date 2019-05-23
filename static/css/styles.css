@@ -32,6 +32,19 @@ a:hover {
 
 /**
  * -----------------------------------------------------------------------------
+ * Apply brand color to elements
+ * -----------------------------------------------------------------------------
+ */
+
+ .report-header__title,
+ .report-nav__item,
+ .section__title--2,
+ a {
+   color: #3d7cda;
+ }
+
+/**
+ * -----------------------------------------------------------------------------
  * Report
  * -----------------------------------------------------------------------------
  */
@@ -100,7 +113,15 @@ a:hover {
  */
 
 .report-nav {
-  margin: 16px;
+}
+
+.report-nav > li {
+  border-bottom: 1px solid #eee;
+  padding: 16px;
+}
+
+.report-nav > li:last-child {
+  border: none;
 }
 
 .report-nav,
@@ -139,6 +160,36 @@ a:hover {
 @keyframes highlight {
   0% { border-color: #4d4d9e; }
   100% { border-color: transparent; }
+}
+
+/**
+ * -----------------------------------------------------------------------------
+ * Section
+ * -----------------------------------------------------------------------------
+ */
+
+.section__title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.section__title--2 {
+  font-size: 24px;
+}
+
+.intervention + .section__title--2 {
+  margin-top: 64px;
+}
+
+.section__title--3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.section__title--4 {
+  font-size: 18px;
+  font-weight: normal;
+  font-style: italic;
 }
 
 /**
@@ -215,16 +266,4 @@ a:hover {
   font-size: 14px;
   margin-bottom: 32px;
   text-align: center;
-}
-
-/**
- * -----------------------------------------------------------------------------
- * Apply brand color to elements
- * -----------------------------------------------------------------------------
- */
-
-.report-header__title,
-.report-nav__item,
-a {
-  color: #3d7cda;
 }
