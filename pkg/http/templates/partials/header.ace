@@ -2,6 +2,8 @@
 html lang=fr
   head
     meta charset=utf-8
-    link href=/static/styles.css type=text/css rel=stylesheet
+    meta name="viewport" content="width=device-width initial-scale=1.0"
+    meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible"
+    link href="/static/styles.css" type="text/css" rel="stylesheet"
     title cran: Prettifier de comptes rendu
   body
