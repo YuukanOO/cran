@@ -14,3 +14,5 @@
       p.home-card__sample Ou utiliser  
         a href="/report?source=http://www.assemblee-nationale.fr/15/cri/2018-2019/20190161.asp" title="Utiliser un exemple de rendu" un exemple
         |  de rendu.
+    
+    = include partials/footer

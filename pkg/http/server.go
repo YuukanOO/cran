@@ -30,8 +30,8 @@ func (s *server) Start(port int) error {
 	e := echo.New()
 	e.Renderer = &aceRenderer{
 		options: &ace.Options{
-			DynamicReload: true,
-			BaseDir:       "pkg/http/templates",
+			// DynamicReload: true,
+			BaseDir: "pkg/http/templates",
 			FuncMap: template.FuncMap{
 				"raw": func(source string) template.HTML {
 					return template.HTML(source)

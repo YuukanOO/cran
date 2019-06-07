@@ -5,7 +5,7 @@
 }
 
 html {
-  font-size: 1.125em;
+  font-size: 1em;
 }
 
 body {
@@ -278,7 +278,6 @@ a:focus {
 }
 
 .report {
-  padding-bottom: 1.4rem;
   padding-top: 1.4rem;
 }
 
@@ -378,6 +377,13 @@ a:focus {
   font-size: 0.8rem;
 }
 
+.footer {
+  color: #666;
+  font-size: 0.8em;
+  text-align: center;
+  padding: 0.7rem 0;
+}
+
 /* Let's apply colors to elements! */
 
 @keyframes highlight {
@@ -398,6 +404,10 @@ a {
 }
 
 @media all and (min-width: 800px) {
+  html {
+    font-size: 1.125em;
+  }
+  
   .topbar {
     align-items: center;
     flex-direction: row;

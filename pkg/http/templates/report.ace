@@ -22,3 +22,5 @@
   .app__content.content.report
     {{ $report := . }}
     = include partials/node (wrap . .)
+  = include partials/footer
+  

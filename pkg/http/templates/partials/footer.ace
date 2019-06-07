@@ -1,0 +1,6 @@
+footer.footer
+  p 
+    small Propulsé par  
+      a href="https://github.com/YuukanOO/cran" title="cran" cran
+      | , réalisé par  
+      a href="https://julien.leicher.me" title="Julien Leicher" Julien Leicher
