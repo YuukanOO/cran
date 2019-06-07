@@ -1,4 +1,4 @@
-Compte Rendu de l'Assemblée Nationale ✨ [![Build Status](https://travis-ci.org/YuukanOO/cran.svg?branch=master)](https://travis-ci.org/YuukanOO/cran)
+Compte Rendu de l'Assemblée Nationale ✨ [![Build Status](https://travis-ci.org/YuukanOO/cran.svg?branch=master)](https://travis-ci.org/YuukanOO/cran) [![codecov](https://codecov.io/gh/YuukanOO/cran/branch/master/graph/badge.svg)](https://codecov.io/gh/YuukanOO/cran) [![Go Report Card](https://goreportcard.com/badge/github.com/YuukanOO/cran)](https://goreportcard.com/report/github.com/YuukanOO/cran)
 ===
 
 Récemment, je me suis retrouvé à lire un compte rendu sur le site de l'assemblée nationale. J'ai trouvé la mise en page peu adaptée au contenu et le manque d'informations sur les participants fort dommage.
