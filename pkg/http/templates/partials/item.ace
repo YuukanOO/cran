@@ -1,0 +1,9 @@
+ul
+  {{ range .Node.Children }}
+  {{ $type := .Type }}
+  {{ if eq $type "Section" }}
+  li.nav class={{ print "nav__item nav__item--" .Level }} 
+    a.nav__title href={{ print "#" .ID }} title="Aller à la section" {{ .Title }}
+    = include partials/item (wrap $.Report . )
+  {{ end }}
+  {{ end }}

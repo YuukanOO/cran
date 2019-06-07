@@ -1,1 +1,1 @@
-web: bin/cran
+web: bin/cran-web

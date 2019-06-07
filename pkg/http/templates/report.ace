@@ -1,0 +1,24 @@
+= include partials/header
+
+.app
+  span#top
+  a.app__gotop href="#top" title="Retourner en haut de page" ↑
+  .app__topbar.topbar
+    .topbar__toggle.toggle
+      input#toggle.toggle__input type="checkbox" name="toggle"
+      label.toggle__label for="toggle" Navigation
+      .menu
+        .menu__top
+          label.menu__close for="toggle" Fermer
+        h2.menu__title Sommaire
+        = include partials/item (wrap . .)
+    .topbar__report.topbar-report
+      img.topbar-report__icon src={{ .IconURL }}
+      div
+        h1.topbar-report__title {{ .Title }}
+        a.topbar-report__source href={{ .URL }} title="Généré depuis l'url" rel="noreferrer noopener" {{ .URL }}
+    div
+      a.topbar__new href="/" title="Générer un nouveau rapport" Nouveau rapport
+  .app__content.content.report
+    {{ $report := . }}
+    = include partials/node (wrap . .)

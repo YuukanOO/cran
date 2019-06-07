@@ -1,0 +1,419 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 1.125em;
+}
+
+body {
+  background-color: #fafafa;
+  color: #222;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1rem;
+  line-height: 1.4rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app--centered {
+  justify-content: center;
+  align-items: center;
+}
+
+.app__gotop {
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  line-height: 2.1rem;
+  display: block;
+  height: 2.1rem;
+  width: 2.1rem;
+  text-align: center;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  position: fixed;
+  z-index: 2;
+}
+
+.home-card {
+  color: white;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  padding: 1.4rem;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.home-card a {
+  color: white;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.home-card__title {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.home-card__subtitle {
+  font-size: 1.563rem;
+  line-height: 2.1rem;
+  font-weight: 600;
+}
+
+.home-card__description {
+  font-weight: normal;
+  font-size: 1rem;
+  margin: 1.4rem 0;
+}
+
+.home-card__sample {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+}
+
+.form {
+  display: flex;
+}
+
+.form__input,
+.form__button {
+  background-color: transparent;
+
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0.7rem;
+}
+
+.form__input {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  width: 100%;
+}
+
+.form__button {
+  border-left: 0;
+  cursor: pointer;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  font-weight: 600;
+  position: relative;
+}
+
+.form__button:hover,
+.form__button:focus {
+  background-color: white;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.form__button:active {
+  top: 1px;
+}
+
+.content {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.4rem;
+  padding-right: 1.4rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.topbar {
+  background-color: white;
+  border-bottom: 1px solid #efefef;
+  padding: 0.7rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar__new {
+  color: inherit;
+  display: none;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.topbar-report {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.topbar-report__icon {
+  max-width: 2.8rem;
+  margin: 0 0.7rem;
+}
+
+.topbar-report__title {
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -0.04em;
+}
+
+.topbar-report__source {
+  font-size: 0.8rem;
+}
+
+.toggle__input {
+  display: none;
+}
+
+.toggle__label {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTAwIDEwMDsiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxyZWN0IHg9IjE4IiB5PSIyOCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjQiPjwvcmVjdD48cmVjdCB4PSIxOCIgeT0iNjgiIHdpZHRoPSI2NCIgaGVpZ2h0PSI0Ij48L3JlY3Q+PHJlY3QgeD0iMTgiIHk9IjQ4IiB3aWR0aD0iNjQiIGhlaWdodD0iNCI+PC9yZWN0PjwvZz48L3N2Zz4=");
+  background-position: left center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  padding-left: 1.4rem;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.toggle__label:hover,
+.toggle__label:focus {
+  text-decoration: underline;
+}
+
+.toggle__input:checked ~ .menu {
+  display: block;
+}
+
+.menu {
+  background-color: white;
+  border-right: 1px solid #efefef;
+  display: none;
+  height: 100vh;
+  width: 300px;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  position: fixed;
+  z-index: 1;
+}
+
+.menu__title {
+  color: #666;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0.35rem 1.4rem 0.7rem 1.4rem;
+}
+
+.menu__top {
+  background-color: white;
+  padding: 0.7rem 1.4rem;
+  position: sticky;
+  top: 0;
+}
+
+.menu__close {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9JzMwMHB4JyB3aWR0aD0nMzAwcHgnICBmaWxsPSIjMDAwMDAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTYgMTYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDE2IDE2OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHBhdGggZD0iTTEzLjkxNywyLjA3OGMtMC4yMDEtMC4xODUtMC41MTktMC4xNzMtMC43MDYsMC4wMzFDMTEuNDk2LDMuOTc4LDkuNzI3LDUuNzg0LDguMDEsNy41MzQgIEM2LjIxOCw1Ljc0MSw0LjQ3NSwzLjg5OCwyLjc5NCwyLjAxN2MtMC4xODUtMC4yMDctMC41MDItMC4yMjMtMC43MDYtMC4wNGMtMC4yMDYsMC4xODQtMC4yMjQsMC41LTAuMDQsMC43MDYgIEMzLjc0NCw0LjU4MSw1LjUwMyw2LjQ0LDcuMzExLDguMjVjLTEuNjA2LDEuNjM3LTMuMjQ3LDMuMzE3LTQuODQ2LDUuMDYyYy0wLjE4NywwLjIwNC0wLjE3MywwLjUyLDAuMDMsMC43MDcgIGMwLjA5NiwwLjA4OCwwLjIxNywwLjEzMSwwLjMzOCwwLjEzMWMwLjEzNSwwLDAuMjctMC4wNTUsMC4zNjgtMC4xNjJjMS41OTEtMS43MzQsMy4yMjYtMy40MDksNC44MjYtNS4wNDEgIGMxLjU1OCwxLjUzNywzLjE0NCwzLjA0Myw0Ljc2NCw0LjQ5NWMwLjA5NiwwLjA4NiwwLjIxNSwwLjEyOCwwLjMzNCwwLjEyOGMwLjEzNywwLDAuMjczLTAuMDU2LDAuMzcyLTAuMTY2ICBjMC4xODUtMC4yMDYsMC4xNjctMC41MjItMC4wMzgtMC43MDZjLTEuNjEtMS40NDMtMy4xODYtMi45NC00LjczNC00LjQ2N2MxLjcyMy0xLjc1NSwzLjQ5OC0zLjU2Niw1LjIyMi01LjQ0NyAgQzE0LjEzNCwyLjU4MSwxNC4xMiwyLjI2NSwxMy45MTcsMi4wNzh6Ij48L3BhdGg+PC9zdmc+");
+  background-position: left center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  padding-left: 1.4rem;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.menu__close:hover,
+.menu__close:focus {
+  text-decoration: underline;
+}
+
+.menu ul {
+  list-style-type: none;
+}
+
+.nav__item--1 {
+  border-top: 1px solid #efefef;
+  padding: 0.7rem 1.4rem;
+}
+
+.nav__item--1 .nav__title {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.nav__item--2 .nav__title {
+  color: inherit;
+  font-weight: normal;
+}
+
+.nav__item--3 {
+  margin-left: 0.7rem;
+}
+
+.nav__item--3 .nav__title {
+  color: #666;
+  font-size: 0.63rem;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+.report {
+  padding-bottom: 1.4rem;
+  padding-top: 1.4rem;
+}
+
+.report h2,
+.report h3,
+.report h4 {
+  margin-top: 2.1rem;
+  margin-bottom: 0.7rem;
+  text-align: center;
+}
+
+.report h2 {
+  font-size: 1.563rem;
+  line-height: 2.1rem;
+  font-weight: bold;
+  letter-spacing: -0.05em;
+}
+
+.report h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.report h2 + h3 {
+  margin-top: 0;
+}
+
+.report h4 {
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.report h3 + h4 {
+  margin-top: 0;
+}
+
+.notice {
+  color: #666;
+  font-size: 0.8rem;
+  margin-bottom: 1.4rem;
+  text-align: center;
+}
+
+.intervention {
+  background-color: white;
+  border: 2px solid transparent;
+  box-shadow: 0 1px 3px #ccc;
+  margin: 1.4rem -1.4rem;
+  padding: 1.4rem;
+}
+
+.intervention--has-speaker {
+  padding-top: 0;
+}
+
+.intervention:target {
+  animation: highlight .8s ease-out;
+}
+
+.intervention__speaker {
+  background-color: white;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 1.4rem;
+  padding-top: 1.4rem;
+}
+
+.intervention__permalink {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.speaker {
+  display: flex;
+  align-items: center;
+}
+
+.speaker__picture {
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  margin-right: 1.4rem;
+  height: 3rem;
+  width: 3rem;
+}
+
+.speaker__name {
+  font-weight: 600;
+}
+
+.speaker__meta {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+/* Let's apply colors to elements! */
+
+@keyframes highlight {
+  0% { border-color: #386dda; }
+  100% { border-color: transparent; }
+}
+
+.home-card {
+  background-color: #386dda;
+}
+
+.form__button:hover,
+.form__button:focus,
+.report h2,
+.report h4,
+a {
+  color: #386dda;
+}
+
+@media all and (min-width: 800px) {
+  .topbar {
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .topbar__new {
+    display: block;
+  }
+
+  .topbar__report {
+    margin: 0 1.4rem;
+  }
+
+  .topbar-report {
+    flex-direction: row;
+    text-align: left;
+  }
+}

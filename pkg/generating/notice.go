@@ -1,4 +1,7 @@
-package domain
+package generating
+
+// NoticeType represents the report node type.
+const NoticeType = "Notice"
 
 // Notice represents a notice text not tied to a speaker.
 type Notice struct {
@@ -7,14 +10,14 @@ type Notice struct {
 }
 
 // NewNotice instantiates a new notice with given content.
-func NewNotice(ID, content string) *Notice {
+func NewNotice(id, content string) *Notice {
 	return &Notice{
-		id:      ID,
+		id:      id,
 		Content: content,
 	}
 }
 
 func (*Notice) Append(nodes ...Node) {}
 func (*Notice) Children() []Node     { return []Node{} }
-func (*Notice) Type() string         { return "Notice" }
+func (*Notice) Type() string         { return NoticeType }
 func (n *Notice) ID() string         { return n.id }

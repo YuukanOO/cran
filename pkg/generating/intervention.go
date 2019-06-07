@@ -1,4 +1,7 @@
-package domain
+package generating
+
+// InterventionType represents the type of an intervention.
+const InterventionType = "Intervention"
 
 // Intervention represents a speaker allocution.
 type Intervention struct {
@@ -8,9 +11,9 @@ type Intervention struct {
 }
 
 // NewIntervention instantiates a new intervention with given data.
-func NewIntervention(ID, speakerID, content string) *Intervention {
+func NewIntervention(id, speakerID, content string) *Intervention {
 	return &Intervention{
-		id:        ID,
+		id:        id,
 		SpeakerID: speakerID,
 		Content:   content,
 	}
@@ -18,5 +21,5 @@ func NewIntervention(ID, speakerID, content string) *Intervention {
 
 func (*Intervention) Append(nodes ...Node) {}
 func (*Intervention) Children() []Node     { return []Node{} }
-func (*Intervention) Type() string         { return "Intervention" }
+func (*Intervention) Type() string         { return InterventionType }
 func (i *Intervention) ID() string         { return i.id }

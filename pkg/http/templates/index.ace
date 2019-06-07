@@ -1,0 +1,16 @@
+= include partials/header
+
+.app.app--centered
+  .content
+    .home-card
+      p.home-card__title cran
+      p.home-card__subtitle Prettifier de comptes rendu
+      h1.home-card__description Rentrez l'URL d'un  
+        a href="http://www.assemblee-nationale.fr/15/debats/index.asp" title="Liste des comptes rendu" rel="noreferrer noopener" compte rendu
+        |  de l'assemblée nationale de manière à en générer une version plus lisible.
+      form.home-card__form.form method="GET" action="/report"
+        input.form__input type="text" name="source"
+        button.form__button type="submit" Go!
+      p.home-card__sample Ou utiliser  
+        a href="/report?source=http://www.assemblee-nationale.fr/15/cri/2018-2019/20190161.asp" title="Utiliser un exemple de rendu" un exemple
+        |  de rendu.

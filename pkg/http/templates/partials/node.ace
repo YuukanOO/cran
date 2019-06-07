@@ -1,0 +1,25 @@
+{{ range .Node.Children }}
+{{ $type := .Type }}
+{{ if eq $type "Section" }}
+{{ $lvl := add .Level 1 }}
+
+{{ print "<h" $lvl " id=\"" .ID "\">" .Title "</h" $lvl ">" | raw }}
+
+= include partials/node (wrap $.Report . )
+{{ else if eq $type "Intervention" }}
+{{ $speaker := index $.Report.Speakers .SpeakerID }}
+.intervention id={{ .ID }} class="{{ if $speaker }}intervention--has-speaker{{ end }}"
+  {{ if $speaker }}
+  .intervention__speaker
+    .speaker
+      .speaker__picture style="background-image: url('{{ $speaker.PictureURL }}')"
+      div
+        a.speaker__name href={{ $speaker.ProfileURL }} title={{ print "Portrait de " $speaker.Name }} rel="noreferrer noopener" {{ $speaker.Name }}
+        p.speaker__meta {{ print $speaker.Side " · " $speaker.Location }}
+    a.intervention__permalink href={{ print "#" .ID }} title="Permalink" #
+  {{ end }}
+  p.intervention__content {{ .Content | raw }}
+{{ else if eq $type "Notice" }}
+p.notice {{ .Content | raw }}
+{{ end }}
+{{ end }}
